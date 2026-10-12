@@ -361,6 +361,9 @@ pub enum DiskImageFileFormat {
     /// WOZ - Applesauce Macintosh Disk Image
     #[cfg(feature = "woz")]
     WozImage,
+    /// RWR - RecoveryWhiskersRaw
+    #[cfg(feature = "rwr")]
+    RecoveryWhiskersRaw,
 }
 
 impl DiskImageFileFormat {
@@ -395,6 +398,8 @@ impl DiskImageFileFormat {
             MoofImage => 0,
             #[cfg(feature = "woz")]
             WozImage => 0,
+            #[cfg(feature = "rwr")]
+            RecoveryWhiskersRaw => 0,
         }
     }
 
@@ -422,6 +427,8 @@ impl DiskImageFileFormat {
             MoofImage => TrackDataResolution::BitStream,
             #[cfg(feature = "woz")]
             WozImage => TrackDataResolution::BitStream,
+            #[cfg(feature = "rwr")]
+            RecoveryWhiskersRaw => TrackDataResolution::FluxStream,
         }
     }
 }
@@ -451,6 +458,8 @@ impl Display for DiskImageFileFormat {
             MoofImage => "MOOF Disk".to_string(),
             #[cfg(feature = "woz")]
             WozImage => "WOZ Disk".to_string(),
+            #[cfg(feature = "rwr")]
+            RecoveryWhiskersRaw => "Recovery Whiskers Raw".to_string(),
         };
         write!(f, "{}", str)
     }

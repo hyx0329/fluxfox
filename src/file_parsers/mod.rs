@@ -38,6 +38,8 @@ pub mod mfi;
 pub mod mfm;
 pub mod pce;
 pub mod raw;
+#[cfg(feature = "rwr")]
+pub mod rwr;
 pub mod scp;
 pub mod tc;
 #[cfg(feature = "td0")]
@@ -274,6 +276,8 @@ impl ImageFormatParser for DiskImageFileFormat {
             DiskImageFileFormat::MoofImage => moof::MoofFormat::capabilities(),
             #[cfg(feature = "woz")]
             DiskImageFileFormat::WozImage => woz::WozFormat::capabilities(),
+            #[cfg(feature = "rwr")]
+            DiskImageFileFormat::RecoveryWhiskersRaw => rwr::RwrFormat::capabilities(),
         }
     }
 
@@ -300,6 +304,8 @@ impl ImageFormatParser for DiskImageFileFormat {
             DiskImageFileFormat::MoofImage => moof::MoofFormat::platforms(),
             #[cfg(feature = "woz")]
             DiskImageFileFormat::WozImage => woz::WozFormat::platforms(),
+            #[cfg(feature = "rwr")]
+            DiskImageFileFormat::RecoveryWhiskersRaw => rwr::RwrFormat::platforms(),
         }
     }
 
@@ -326,6 +332,8 @@ impl ImageFormatParser for DiskImageFileFormat {
             DiskImageFileFormat::MoofImage => moof::MoofFormat::detect(image_buf),
             #[cfg(feature = "woz")]
             DiskImageFileFormat::WozImage => woz::WozFormat::detect(image_buf),
+            #[cfg(feature = "rwr")]
+            DiskImageFileFormat::RecoveryWhiskersRaw => rwr::RwrFormat::detect(image_buf),
         }
     }
 
@@ -352,6 +360,8 @@ impl ImageFormatParser for DiskImageFileFormat {
             DiskImageFileFormat::MoofImage => moof::MoofFormat::extensions(),
             #[cfg(feature = "woz")]
             DiskImageFileFormat::WozImage => woz::WozFormat::extensions(),
+            #[cfg(feature = "rwr")]
+            DiskImageFileFormat::RecoveryWhiskersRaw => rwr::RwrFormat::extensions(),
         }
     }
 
@@ -384,6 +394,8 @@ impl ImageFormatParser for DiskImageFileFormat {
             DiskImageFileFormat::MoofImage => moof::MoofFormat::load_image(read_buf, image, opts, callback),
             #[cfg(feature = "woz")]
             DiskImageFileFormat::WozImage => woz::WozFormat::load_image(read_buf, image, opts, callback),
+            #[cfg(feature = "rwr")]
+            DiskImageFileFormat::RecoveryWhiskersRaw => rwr::RwrFormat::load_image(read_buf, image, opts, callback),
         }
     }
 
@@ -450,6 +462,8 @@ impl ImageFormatParser for DiskImageFileFormat {
             DiskImageFileFormat::MoofImage => moof::MoofFormat::can_write(image),
             #[cfg(feature = "woz")]
             DiskImageFileFormat::WozImage => woz::WozFormat::can_write(image),
+            #[cfg(feature = "rwr")]
+            DiskImageFileFormat::RecoveryWhiskersRaw => rwr::RwrFormat::can_write(image),
         }
     }
 
@@ -481,6 +495,8 @@ impl ImageFormatParser for DiskImageFileFormat {
             DiskImageFileFormat::MoofImage => moof::MoofFormat::save_image(image, opts, write_buf),
             #[cfg(feature = "woz")]
             DiskImageFileFormat::WozImage => woz::WozFormat::save_image(image, opts, write_buf),
+            #[cfg(feature = "rwr")]
+            DiskImageFileFormat::RecoveryWhiskersRaw => rwr::RwrFormat::save_image(image, opts, write_buf),
         }
     }
 }

@@ -108,6 +108,11 @@ rhai = { version = "1.20", optional = true }
 # svg is used by imgviz and fluxfox_svg
 svg = { workspace = true, optional = true }
 
+# recovery-whiskers doesn't have a switch to disable unusable libs on wasm
+# savefile is used with recovery-whiskers
+savefile = { workspace = true, optional = true }
+savefile-derive = { workspace = true, optional = true }
+
 #wasm-bindgen-futures = { version = "0.4", optional = true }
 
 # fluxfox_fat is used for reading FAT12/16/32 filesystems if 'fat' feature is enabled
@@ -183,6 +188,10 @@ web-time = "1.1"
 # wasm-bindgen is used for the web buids of fluxfox_egui
 wasm-bindgen = { version = "=0.2.108" }
 wasm-bindgen-futures = { version = "0.4" }
+# recovery-whiskers, it has rwr format consisting all raw captures from greaseweazle
+#recovery-whiskers = "0.7.1"
+savefile = "0.20.2"
+savefile-derive = "0.20.2"
 
 # Dev dependencies
 # ----------------------------------------------------------------------------------------------------------------------
@@ -194,7 +203,7 @@ hex = "0.4"    # or the latest version
 # core features should always be enabled first if default-features is false
 core = ["rand"]
 all_platforms = ["ibm_pc", "atari_st", "amiga", "macintosh", "apple_ii"]
-default = ["core", "viz", "scripting", "rhai", "archives", "mfi", "fat", "flux", "all_platforms"]
+default = ["core", "viz", "scripting", "rhai", "archives", "mfi", "fat", "flux", "all_platforms", "rwr"]
 # the rand feature enables use of the rand crate for random number generation.
 # note: it is intended to be optional but the fallback is not yet implemented
 rand = ["dep:rand"]
@@ -263,6 +272,8 @@ adf = []
 st = []
 # ipf feature enables reading SPS IPF images. This will pull in modular-bitfield
 ipf = ["dep:modular-bitfield"]
+# rwr feature enables readling RecoveryWhiskersRaw, this is AGPLv3+
+rwr = ["dep:savefile"]
 
 
 # Clippy lint control
