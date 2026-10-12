@@ -82,6 +82,8 @@ impl RwrFormat {
                 .extend(flux.parts.iter().filter(|p| p.rotation == Rotation::Full));
         }
 
+        let max_tracks = by_pos.keys().map(|(_, t)| *t).max().unwrap_or_default() + 1;
+        let side_count = by_pos.keys().map(|(s, _)| *s).max().unwrap_or_default() + 1;
         log::info!("RecoveryWhiskersRaw: Total physical positions count: {}", by_pos.len());
         log::info!("RecoveryWhiskersRaw: Full revolutions count: {}", by_pos.values().map(|v|v.len()).sum::<usize>());
         log::info!("RecoveryWhiskersRaw: Max revolutions for a single track: {}", by_pos.values().map(|v|v.len()).max().unwrap_or_default());
@@ -158,7 +160,9 @@ impl RwrFormat {
         disk_image.descriptor = DiskDescriptor {
             // RWR doesn't specify platform at all. Figure it out after import.
             platforms: None,
-            geometry: disk_image.geometry(),
+            // required to visualize properly
+            // but I don't think it's the job for raw flux formats...
+            geometry: DiskCh::from((max_tracks, side_count)),
             data_rate: disk_data_rate.unwrap(),
             density: TrackDensity::from(disk_data_rate.unwrap()),
             data_encoding: TrackDataEncoding::Mfm,
