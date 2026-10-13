@@ -42,6 +42,13 @@ impl RwrFormat {
             return false;
         }
 
+        let mut buffer = [0u8; 8];
+        let _ = image.read(&mut buffer);
+        if buffer != "savefile".as_bytes() {
+            return false;
+        }
+
+        let _ = image.seek(std::io::SeekFrom::Start(0));
         load::<RecoveryWhiskersRaw>(&mut image, RWR_VER).is_ok()
     }
 
