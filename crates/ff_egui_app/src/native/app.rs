@@ -25,7 +25,7 @@
     --------------------------------------------------------------------------
 */
 
-use std::sync::Arc;
+use std::{io::Write, sync::Arc};
 
 use crate::App;
 use anyhow::Result;
@@ -49,7 +49,27 @@ impl App {
         }
     }
 
-    pub(crate) fn save_file_as(_path: &str, _bytes: &[u8]) -> Result<()> {
+    pub(crate) fn save_file_as(file_name: &str, bytes: &[u8]) -> Result<()> {
+        if let Some(path) = rfd::FileDialog::new().set_file_name(file_name).save_file() {
+            // I prefer not to overwrite anything
+            match std::fs::File::create_new(&path) {
+                Ok(mut file) => {
+                    match file.write_all(bytes) {
+                        Ok(_) => {
+                            log::info!("File saved to {}", path.to_string_lossy());
+                        },
+                        Err(e) => {
+                            log::error!("Failed to write data to target file: {:?}", e);
+                        },
+                    };
+                },
+                Err(e) => {
+                    log::error!("Failed to create a new file to save data: {:?}", e);
+                },
+            }
+        } else {
+            log::debug!("User selected nothing");
+        }
         Ok(())
     }
 }

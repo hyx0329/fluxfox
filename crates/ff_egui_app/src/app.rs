@@ -708,6 +708,36 @@ impl App {
             let is_web = cfg!(target_arch = "wasm32");
             if !is_web {
                 ui.menu_button("File", |ui| {
+                    #[cfg(not(target_arch = "wasm32"))]
+                    {
+                        if ui.button("Load").clicked() {
+                            log::debug!("User want to load image file");
+                            // file picker
+                            if let Some(path) = rfd::FileDialog::new().pick_file() {
+                                // TODO: move loading to background
+                                match DiskImage::load_from_file(&path, None, None) {
+                                    Ok(disk) => {
+                                        log::debug!("Disk image loaded successfully!");
+                                        let disk = DiskSlot {
+                                            image: Some(TrackingLock::new(disk)),
+                                            image_name: Some(path.file_name().map_or("image.bin".to_string(), |p|p.to_string_lossy().to_string())),
+                                            source_path: None,
+                                        };
+                                        // Current UI only makes sense with one slot
+                                        self.set_slot(0, disk);
+                                        self.new_disk();
+                                        ctx.request_repaint();
+                                        self.events.push_back(AppEvent::ImageLoaded(self.selected_slot));
+                                    },
+                                    Err(e) => {
+                                        log::warn!("Failed to open file at `{}', {:?}", path.to_string_lossy(), e);
+                                    },
+                                }
+                            } else {
+                                log::debug!("No file is selected");
+                            }
+                        }
+                    }
                     if ui.button("Quit").clicked() {
                         ctx.send_viewport_cmd(egui::ViewportCommand::Close);
                     }
