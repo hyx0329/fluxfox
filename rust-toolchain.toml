@@ -1,3 +1,5 @@
 [toolchain]
-channel = "1.92.0"
+# use a stable version when automics is stabilized
+channel = "nightly"
 targets = ["wasm32-unknown-unknown"]
+components = ["rust-analyzer"]
