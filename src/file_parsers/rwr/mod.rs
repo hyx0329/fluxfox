@@ -14,11 +14,10 @@ use strum::IntoEnumIterator;
 
 use flux::{FluxPart, Rotation};
 use recovery_whiskers_raw::RecoveryWhiskersRaw;
+use recovery_whiskers_raw::RWR_VER;
 use savefile::load;
 use std::collections::BTreeMap;
 
-// Not exported by recovery_whiskers
-const RWR_VER: u32 = 3;
 
 pub struct RwrFormat;
 
